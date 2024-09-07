@@ -1,0 +1,124 @@
+.details-container {
+  margin-left: 10%;
+  margin-right: 10%;
+  animation: fadeIn 1s ease-in-out; /* Fade-in animation */
+}
+
+.details-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.details-title {
+  font-size: 1.5rem;
+  text-align: center;
+  text-transform: uppercase;
+  color: white;
+  margin: 15px;
+  margin-bottom: 40px;
+  /* opacity: 0; */
+  transform: translateY(20px);
+  transition: opacity 0.8s, transform 0.8s; /* Slide up animation */
+}
+
+.details-image {
+  margin-bottom: 40px;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 1s, transform 1s; /* Smooth transition */
+}
+
+.details-description {
+  text-align: justify;
+  font-size: 1rem;
+  line-height: 130%;
+  margin: 50px 0;
+  color: white;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1.2s, transform 1.2s; /* Slide up transition */
+}
+
+.details-other-images {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.details-other-image {
+  height: auto; /* Maintain aspect ratio */
+  padding: 3% 0;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 1s, transform 1s; /* Smooth transition */
+}
+
+/* Animation class to be added on scroll */
+.animate {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Responsive design for laptop screens */
+@media (min-width: 768px) {
+  .details-card {
+    padding-top: 0%;
+  }
+
+  .details-description {
+    font-size: 1.2rem;
+    line-height: 1.2;
+  }
+
+  .details-other-images {
+    justify-content: space-around;
+  }
+}
+
+.bottom-button a {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.go-back-container{
+  width: fit-content;
+}
+
+.go-back {
+  color: white;
+    text-decoration: none;
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+/* Responsive design for mobile screens */
+@media (max-width: 767px) {
+  .details-card {
+    padding-top: 0%;
+  }
+
+  .details-container {
+    margin-left: 0%;
+    margin-right: 0%;
+  }
+
+  .details-other-image {
+    margin: 5px 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

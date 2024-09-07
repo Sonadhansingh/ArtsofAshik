@@ -1,0 +1,134 @@
+/* General resets and box sizing */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  /* overflow: hidden; */
+}
+
+.main-container {
+  width: 100%;
+  height: 70vh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+#bg-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: bottom;
+  display: block;
+}
+
+#bg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+  z-index: 0;
+}
+
+.content-container {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.main-left-button, .main-right-button {
+  width: fit-content;
+  font-size: 3.5em;
+  font-weight: bold;
+  animation: fade-in-scale 2s ease-in-out;
+  background: linear-gradient(to right, #ffffff, #eeeeee);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 4px rgb(236, 232, 232);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  position: relative;
+}
+
+.main-right-button {
+  margin-right: 35px;
+}
+
+button:focus {
+  outline: none;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  #bg-video {
+    display: none;
+  }
+
+  #bg-image {
+    display: block;
+  }
+
+  .content-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .main-left-button, .main-right-button {
+    font-size: 1.5rem;
+    font-weight: bold;
+    animation: fade-in-scale 2s ease-in-out;
+    background: linear-gradient(to right, #f7f5f5, #fcfcfc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 4px rgb(182, 182, 182);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 0;
+    position: relative;
+    padding-bottom: 50%;
+  }
+
+  .main-right-button {
+    margin-right: 0;
+  }
+}
+
+@keyframes fade-in-scale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

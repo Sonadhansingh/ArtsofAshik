@@ -1,0 +1,86 @@
+/* LoadingScreen.css */
+
+/* Base styles for the loading screen */
+#loading-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    position: fixed; /* Use fixed to cover the viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: transform 1s ease-out, opacity 1s ease-out; /* Smooth slide and fade out */
+  }
+  
+  /* Mask to show progress */
+  #loading-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1%;
+    background-color: #000;
+    z-index: 1;
+    transition: width 0.3s ease-out; /* Smooth progress fill animation */
+  }
+  
+  /* Text displayed on the loading screen */
+  #loading-text {
+    position: relative;
+    z-index: 2;
+    font-size: 6rem;
+    color: #000000;
+    overflow: hidden;
+  }
+  
+  /* Number showing progress */
+  .loading-number {
+    width: 100%;
+    position: relative;
+    color: #000000;
+    font-family: "Playwrite CU", cursive;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 6rem;
+    padding: 2%;
+  }
+  
+  /* Animation to slide up and fade out */
+  .hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  
+  /* Responsive font sizes for different devices */
+  @media (max-width: 1200px) {
+    #loading-text {
+      font-size: 6rem;
+    }
+  
+    .loading-number {
+      font-size: 6rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    #loading-text {
+      font-size: 4rem;
+    }
+  
+    .loading-number {
+      font-size: 4rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    #loading-text {
+      font-size: 3rem;
+    }
+  
+    .loading-number {
+      font-size: 3rem;
+    }
+  }
+  
