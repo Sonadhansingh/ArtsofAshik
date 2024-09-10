@@ -9,7 +9,7 @@ import Competences from './Competences';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import EducationExperience from './Education';
-import backgroundvideo from './rr.mp4'
+// import backgroundvideo from './rr.mp4'
 
 const PublicAppHomePage = () => {
   const [latestVideoUrl, setLatestVideoUrl] = useState('');
