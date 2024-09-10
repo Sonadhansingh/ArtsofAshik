@@ -9,7 +9,7 @@ const Details = () => {
   const [character, setCharacter] = useState(null);
   const [error, setError] = useState('');
   const [imageWidths, setImageWidths] = useState({});
-  
+
   const mainImageRef = useRef(null);
   const otherImagesRef = useRef([]);
   const descriptionRef = useRef(null);
@@ -75,35 +75,40 @@ const Details = () => {
       });
     }, { threshold: 0.1 });
 
+    // Copy current refs to local variables inside the effect
+    const mainImage = mainImageRef.current;
+    const otherImages = otherImagesRef.current;
+    const description = descriptionRef.current;
+
     // Observe the main image
-    if (mainImageRef.current) {
-      observer.observe(mainImageRef.current);
+    if (mainImage) {
+      observer.observe(mainImage);
     }
 
     // Observe other images
-    otherImagesRef.current.forEach(image => {
+    otherImages.forEach(image => {
       if (image) {
         observer.observe(image);
       }
     });
 
     // Observe the description
-    if (descriptionRef.current) {
-      observer.observe(descriptionRef.current);
+    if (description) {
+      observer.observe(description);
     }
 
     return () => {
-      // Clean up the observer on component unmount
-      if (mainImageRef.current) {
-        observer.unobserve(mainImageRef.current);
+      // Cleanup: Use local variables to unobserve
+      if (mainImage) {
+        observer.unobserve(mainImage);
       }
-      otherImagesRef.current.forEach(image => {
+      otherImages.forEach(image => {
         if (image) {
           observer.unobserve(image);
         }
       });
-      if (descriptionRef.current) {
-        observer.unobserve(descriptionRef.current);
+      if (description) {
+        observer.unobserve(description);
       }
     };
   }, [character]);
@@ -144,7 +149,8 @@ const Details = () => {
       <div className='bottom-button'>
         <div className='go-back-container'>
           <a className='go-back' href='/character'>
-          <span className='icon-right'><FaArrowLeft/></span>Go back</a>
+            <span className='icon-right'><FaArrowLeft/></span>Go back
+          </a>
         </div>
       </div>
     </div>

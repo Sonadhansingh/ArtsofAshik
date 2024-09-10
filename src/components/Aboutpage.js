@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaAmazon, FaArrowRight, faArrowRightLong, FaDownload } from 'react-icons/fa';
+import { FaDownload } from 'react-icons/fa';
 import './Aboutpage.css';
 
 function AboutPage() {

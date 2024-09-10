@@ -36,6 +36,7 @@ const EnvironmentDetails = () => {
           return naturalWidth / naturalHeight > 1.5 ? '100%' : '70%';
         };
 
+        // Set width for main image
         if (mainImageRef.current) {
           setImageWidths(prevWidths => ({
             ...prevWidths,
@@ -43,6 +44,7 @@ const EnvironmentDetails = () => {
           }));
         }
 
+        // Set width for other images
         otherImagesRef.current.forEach((image, index) => {
           setImageWidths(prevWidths => ({
             ...prevWidths,
@@ -51,14 +53,17 @@ const EnvironmentDetails = () => {
         });
       };
 
+      // Adjust image width after images have loaded
       if (mainImageRef.current) mainImageRef.current.onload = adjustImageWidth;
       otherImagesRef.current.forEach(image => image.onload = adjustImageWidth);
 
+      // Adjust width on component mount and update
       adjustImageWidth();
     }
   }, [environment]);
 
   useEffect(() => {
+    // Intersection Observer to handle animations on scroll
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -69,31 +74,40 @@ const EnvironmentDetails = () => {
       });
     }, { threshold: 0.1 });
 
-    if (mainImageRef.current) {
-      observer.observe(mainImageRef.current);
+    // Copy current refs to local variables inside the effect
+    const mainImage = mainImageRef.current;
+    const otherImages = otherImagesRef.current;
+    const description = descriptionRef.current;
+
+    // Observe the main image
+    if (mainImage) {
+      observer.observe(mainImage);
     }
 
-    otherImagesRef.current.forEach(image => {
+    // Observe other images
+    otherImages.forEach(image => {
       if (image) {
         observer.observe(image);
       }
     });
 
-    if (descriptionRef.current) {
-      observer.observe(descriptionRef.current);
+    // Observe the description
+    if (description) {
+      observer.observe(description);
     }
 
     return () => {
-      if (mainImageRef.current) {
-        observer.unobserve(mainImageRef.current);
+      // Cleanup: Use local variables to unobserve
+      if (mainImage) {
+        observer.unobserve(mainImage);
       }
-      otherImagesRef.current.forEach(image => {
+      otherImages.forEach(image => {
         if (image) {
           observer.unobserve(image);
         }
       });
-      if (descriptionRef.current) {
-        observer.unobserve(descriptionRef.current);
+      if (description) {
+        observer.unobserve(description);
       }
     };
   }, [environment]);
