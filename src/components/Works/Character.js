@@ -36,7 +36,7 @@ const Character = () => {
               <Link to={`/details/${item._id}`}>
                 <div className='image-container'>
                   <img className='character-image'
-                    src={`${process.env.REACT_APP_API_URL}/${item.mainImages[0]}`}
+                    src={`${process.env.REACT_APP_API_URL}${item.mainImages[0]}`}
                     alt={item.title}
                   />
                   <div className='character-title'>
