@@ -24,7 +24,7 @@ const ImageRoll = () => {
         {images.map((image, index) => (
           <div key={index} className="carousel-image-wrapper">
             <img
-              src={`${process.env.REACT_APP_API_URL}/${image.path}`}
+              src={`${process.env.REACT_APP_API_URL}/uploads/${image.path}`}
               alt={image.filename}
               className="carousel-image"
             />
@@ -33,7 +33,7 @@ const ImageRoll = () => {
         {images.map((image, index) => (
           <div key={index + images.length} className="carousel-image-wrapper">
             <img
-              src={`${process.env.REACT_APP_API_URL}/${image.path}`}
+              src={`${process.env.REACT_APP_API_URL}/uploads/${image.path}`}
               alt={image.filename}
               className="carousel-image"
             />
