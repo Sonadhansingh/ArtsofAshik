@@ -149,7 +149,7 @@ const PublicAppHomePage = () => {
       <div className='small-wrapper'>
         <p className='right-text'>Education & Experience</p>
         <div className='line-splitter'></div>
-        <Suspense fallback={<div>Loading Education & Experience...</div>}>
+        <Suspense fallback={<div></div>}>
           <EducationExperience />
         </Suspense>
      
@@ -162,17 +162,17 @@ const PublicAppHomePage = () => {
             <h2>Skills & Strength</h2>
           </div>
           <div className="chart-container">
-          <Suspense fallback={<div>Loading Skills...</div>}>
+          <Suspense fallback={<div></div>}>
             <SkillsChart skills={skills} />
           </Suspense>
-          <Suspense fallback={<div>Loading Strength...</div>}>
+          <Suspense fallback={<div></div>}>
             <StrengthChart strength={strength} />
           </Suspense>
           </div>
         </div>
       </div>
 
-      <Suspense fallback={<div>Loading Competences...</div>}>
+      <Suspense fallback={<div></div>}>
         <Competences />
       </Suspense>
 
@@ -221,7 +221,7 @@ const PublicAppHomePage = () => {
       </div>
 
       {/* Lazy load ImageRoll */}
-    <Suspense fallback={<div>Loading Images...</div>}>
+    <Suspense fallback={<div></div>}>
       <ImageRoll />
     </Suspense>
 
@@ -237,6 +237,13 @@ const PublicAppHomePage = () => {
           <p>{error}</p>
         ) : (
           <>
+          <div className='designer'>
+          <p className='contact-title'>Designed & Developed by</p>
+            <div className="contact-details">
+            <em><a href="mailto:sona24347@gmail.com">Sona Dhansingh</a></em>
+            </div>
+          </div>
+          <div className='contact-main'>
             <div className="contact-links">
               <p className='contact-title'>Social media</p>
                 {contacts.map(contact => (
@@ -256,6 +263,7 @@ const PublicAppHomePage = () => {
                 <p>{contactDetails.mainId}</p>
               </div>
             )}
+            </div>
             </div>
           </>
         )}
