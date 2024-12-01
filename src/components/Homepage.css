@@ -23,7 +23,9 @@
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  animation: fadeInVideo 2s forwards, adjustBrightness 2s forwards;
+  z-index: -1; /* Ensures the video stays behind other content */
+  pointer-events: none; /* Disables any interactions with the video */
+  animation: fadeInVideo 1s forwards, adjustBrightness 2s forwards;
 }
 
 /* Fade In Keyframes */
@@ -201,7 +203,7 @@
 /* Big Text Container */
 .big-text-container {
   text-indent: 3.5em;
-  font-size: 4em;
+  font-size: 3.8em;
   font-weight: 0;
   line-height: 1;
   letter-spacing: -0.1rem;
@@ -232,7 +234,6 @@
   height: 100%;
   padding: 170px 28px 28px 28px;
 }
-
 /* Mail General */
 .mail-general {
   flex-direction: column;
@@ -687,6 +688,7 @@
   line-height: 1;
   white-space: nowrap;
   overflow: hidden;
+  position: absolute;
 }
 
 @media (max-width: 768px) {

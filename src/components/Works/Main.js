@@ -22,7 +22,7 @@ function Main() {
         <source src={lapbackground} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-      <img src={phbackground} alt='background image' id="bg-image" />    
+      <img src={phbackground} alt='background' id="bg-image" />    
       </div>
     <div className='content-container'>
          <button className="main-left-button" onClick={handleLeftClick} aria-label="Navigate to left page">CHARACTER</button>

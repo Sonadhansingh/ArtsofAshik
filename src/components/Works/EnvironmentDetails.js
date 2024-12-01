@@ -7,12 +7,9 @@ import './EnvironmentDetails.css';
 const EnvironmentDetails = () => {
   const { id } = useParams();
   const [environment, setEnvironment] = useState(null);
-  const [error, setError] = useState('');
-  const [imageWidths, setImageWidths] = useState({});
-
   const mainImageRef = useRef(null);
   const otherImagesRef = useRef([]);
-  const descriptionRef = useRef(null);
+  const videoRef = useRef([]);
 
   useEffect(() => {
     const fetchEnvironment = async () => {
@@ -21,7 +18,6 @@ const EnvironmentDetails = () => {
         setEnvironment(response.data);
       } catch (error) {
         console.error('Error fetching environment details:', error);
-        setError('Failed to load environment details');
       }
     };
 
@@ -29,114 +25,92 @@ const EnvironmentDetails = () => {
   }, [id]);
 
   useEffect(() => {
-    if (environment) {
-      const adjustImageWidth = () => {
-        const calculateImageWidth = (image) => {
-          const { naturalWidth, naturalHeight } = image;
-          return naturalWidth / naturalHeight > 1.5 ? '100%' : '70%';
-        };
-
-        if (mainImageRef.current) {
-          setImageWidths(prevWidths => ({
-            ...prevWidths,
-            main: calculateImageWidth(mainImageRef.current)
-          }));
-        }
-
-        otherImagesRef.current.forEach((image, index) => {
-          setImageWidths(prevWidths => ({
-            ...prevWidths,
-            [`other-${index}`]: calculateImageWidth(image)
-          }));
-        });
-      };
-
-      if (mainImageRef.current) mainImageRef.current.onload = adjustImageWidth;
-      otherImagesRef.current.forEach(image => image.onload = adjustImageWidth);
-
-      adjustImageWidth();
-    }
-  }, [environment]);
-
-  useEffect(() => {
+    // Intersection Observer for fade-in effect
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('animate');
-        } else {
-          entry.target.classList.remove('animate');
         }
       });
     }, { threshold: 0.1 });
-
-    if (mainImageRef.current) {
-      observer.observe(mainImageRef.current);
-    }
-
-    otherImagesRef.current.forEach(image => {
-      if (image) {
-        observer.observe(image);
-      }
-    });
-
-    if (descriptionRef.current) {
-      observer.observe(descriptionRef.current);
-    }
-
+  
+    // Store refs in local variables
+    const mainImageRefCurrent = mainImageRef.current;
+    const otherImagesRefCurrent = otherImagesRef.current;
+    const videoRefCurrent = videoRef.current;
+  
+    if (mainImageRefCurrent) observer.observe(mainImageRefCurrent);
+    otherImagesRefCurrent.forEach(image => image && observer.observe(image));
+    videoRefCurrent.forEach(video => video && observer.observe(video));
+  
     return () => {
-      if (mainImageRef.current) {
-        observer.unobserve(mainImageRef.current);
-      }
-      otherImagesRef.current.forEach(image => {
-        if (image) {
-          observer.unobserve(image);
-        }
-      });
-      if (descriptionRef.current) {
-        observer.unobserve(descriptionRef.current);
-      }
+      if (mainImageRefCurrent) observer.unobserve(mainImageRefCurrent);
+      otherImagesRefCurrent.forEach(image => image && observer.unobserve(image));
+      videoRefCurrent.forEach(video => video && observer.unobserve(video));
     };
-  }, [environment]);
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  if (!environment) {
-    return <div></div>;
-  }
+  }, [environment]); 
 
   return (
     <div className="details-container">
       <div className='details-card'>
+
+      {environment && (
+        <>
         <h1 className="details-title">{environment.title}</h1>
-        <img
-          src={`${process.env.REACT_APP_API_URL}/${environment.mainImages[0]}`}
-          alt={environment.title}
-          className="details-image"
-          ref={mainImageRef}
-          style={{ width: imageWidths.main }}
-        />
-        <div className="details-other-images">
-          {environment.images.map((image, index) => (
-            <img
-              key={index}
-              src={`${process.env.REACT_APP_API_URL}/${image}`}
-              alt={`Detail ${index}`}
-              className="details-other-image"
-              ref={el => otherImagesRef.current[index] = el}
-              style={{ width: imageWidths[`other-${index}`] }}
-            />
-          ))}
-        </div>
-        <p className="details-description" ref={descriptionRef}>{environment.description}</p>
-      </div>
+        
+
+            <div className='main-image-container'>
+              {environment.mainImages && (
+                <img 
+                  src={environment.mainImages} 
+                  alt={environment.title} 
+                  ref={mainImageRef} 
+                  className='details-image' 
+                />
+              )}
+            </div>
+
+         {/* Additional Images */}
+         <div className='details-other-images'>
+              {environment.images && environment.images.length > 0 && (
+                environment.images.map((image, index) => (
+                  <img 
+                    key={index} 
+                    src={image} 
+                    alt={`additional-${index}`} 
+                    ref={(el) => (otherImagesRef.current[index] = el)} 
+                    className='details-other-image' 
+                  />
+                ))
+              )}
+            </div>
+
+             {/* Videos */}
+             
+              {environment.videos && environment.videos.length > 0 && (
+                <div className='video-container'>
+                  {environment.videos.map((video, index) => (
+                    <video key={index} controls loading="lazy" className='video-player' ref={(el) => (videoRef.current[index] = el)}>
+                      <source src={video} type='video/mp4' />
+                      Your browser does not support the video tag.
+                    </video>
+                  ))}
+                </div>
+              )}
+            
+
+        <p className="details-description">{environment.description}</p>
+  
+      </>
+    )}
+
       <div className='bottom-button'>
         <div className='go-back-container'>
           <a className='go-back' href='/environment'>
             <span className='icon-right'><FaArrowLeft/></span>Go back
           </a>
         </div>
+      </div>
       </div>
     </div>
   );

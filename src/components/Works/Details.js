@@ -7,12 +7,9 @@ import './Details.css';
 const Details = () => {
   const { id } = useParams();
   const [character, setCharacter] = useState(null);
-  const [error, setError] = useState('');
-  const [imageWidths, setImageWidths] = useState({});
-  
   const mainImageRef = useRef(null);
   const otherImagesRef = useRef([]);
-  const descriptionRef = useRef(null);
+  const videoRef = useRef([]);
 
   useEffect(() => {
     const fetchCharacter = async () => {
@@ -21,7 +18,6 @@ const Details = () => {
         setCharacter(response.data);
       } catch (error) {
         console.error('Error fetching character details:', error);
-        setError('Failed to load character details');
       }
     };
 
@@ -29,126 +25,118 @@ const Details = () => {
   }, [id]);
 
   useEffect(() => {
-    if (character) {
-      // Function to handle image width adjustment
-      const adjustImageWidth = () => {
-        const calculateImageWidth = (image) => {
-          const { naturalWidth, naturalHeight } = image;
-          return naturalWidth / naturalHeight > 1.5 ? '100%' : '70%';
-        };
-
-        // Set width for main image
-        if (mainImageRef.current) {
-          setImageWidths(prevWidths => ({
-            ...prevWidths,
-            main: calculateImageWidth(mainImageRef.current)
-          }));
-        }
-
-        // Set width for other images
-        otherImagesRef.current.forEach((image, index) => {
-          setImageWidths(prevWidths => ({
-            ...prevWidths,
-            [`other-${index}`]: calculateImageWidth(image)
-          }));
-        });
-      };
-
-      // Adjust image width after images have loaded
-      if (mainImageRef.current) mainImageRef.current.onload = adjustImageWidth;
-      otherImagesRef.current.forEach(image => image.onload = adjustImageWidth);
-
-      // Adjust width on component mount and update
-      adjustImageWidth();
-    }
-  }, [character]);
-
-  useEffect(() => {
-    // Intersection Observer to handle animations on scroll
+    // Intersection Observer for fade-in effect
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('animate');
-        } else {
-          entry.target.classList.remove('animate');
         }
       });
     }, { threshold: 0.1 });
-
-    // Observe the main image
-    if (mainImageRef.current) {
-      observer.observe(mainImageRef.current);
-    }
-
-    // Observe other images
-    otherImagesRef.current.forEach(image => {
-      if (image) {
-        observer.observe(image);
-      }
-    });
-
-    // Observe the description
-    if (descriptionRef.current) {
-      observer.observe(descriptionRef.current);
-    }
-
+  
+    // Store refs in local variables
+    const mainImageRefCurrent = mainImageRef.current;
+    const otherImagesRefCurrent = otherImagesRef.current;
+    const videoRefCurrent = videoRef.current;
+  
+    if (mainImageRefCurrent) observer.observe(mainImageRefCurrent);
+    otherImagesRefCurrent.forEach(image => image && observer.observe(image));
+    videoRefCurrent.forEach(video => video && observer.observe(video));
+  
     return () => {
-      // Clean up the observer on component unmount
-      if (mainImageRef.current) {
-        observer.unobserve(mainImageRef.current);
-      }
-      otherImagesRef.current.forEach(image => {
-        if (image) {
-          observer.unobserve(image);
+      if (mainImageRefCurrent) observer.unobserve(mainImageRefCurrent);
+      otherImagesRefCurrent.forEach(image => image && observer.unobserve(image));
+      videoRefCurrent.forEach(video => video && observer.unobserve(video));
+    };
+  }, [character]);useEffect(() => {
+    // Intersection Observer for fade-in effect
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate');
         }
       });
-      if (descriptionRef.current) {
-        observer.unobserve(descriptionRef.current);
-      }
+    }, { threshold: 0.1 });
+  
+    // Store refs in local variables
+    const mainImageRefCurrent = mainImageRef.current;
+    const otherImagesRefCurrent = otherImagesRef.current;
+    const videoRefCurrent = videoRef.current;
+  
+    if (mainImageRefCurrent) observer.observe(mainImageRefCurrent);
+    otherImagesRefCurrent.forEach(image => image && observer.observe(image));
+    videoRefCurrent.forEach(video => video && observer.observe(video));
+  
+    return () => {
+      if (mainImageRefCurrent) observer.unobserve(mainImageRefCurrent);
+      otherImagesRefCurrent.forEach(image => image && observer.unobserve(image));
+      videoRefCurrent.forEach(video => video && observer.unobserve(video));
     };
   }, [character]);
 
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  if (!character) {
-    return <div></div>;
-  }
-
   return (
-    <div className="details-container">
+    <div className='details-container'>
       <div className='details-card'>
-        <h1 className="details-title">{character.title}</h1>
-        <img
-          src={`${process.env.REACT_APP_API_URL}/${character.mainImages[0]}`}
-          alt={character.title}
-          className="details-image"
-          ref={mainImageRef}
-          style={{ width: imageWidths.main }}
-        />
-        <div className="details-other-images">
-          {character.images.map((image, index) => (
-            <img
-              key={index}
-              src={`${process.env.REACT_APP_API_URL}/${image}`}
-              alt={`Detail ${index}`}
-              className="details-other-image"
-              ref={el => otherImagesRef.current[index] = el}
-              style={{ width: imageWidths[`other-${index}`] }}
-            />
-          ))}
-        </div>
-        <p className="details-description" ref={descriptionRef}>{character.description}</p>
-      </div>
-      <div className='bottom-button'>
-        <div className='go-back-container'>
-          <a className='go-back' href='/character'>
-          <span className='icon-right'><FaArrowLeft/></span>Go back</a>
+        {character && (
+          <>
+            <h1 className="details-title">{character.title}</h1>
+
+            {/* Main Image */}
+            <div className='main-image-container'>
+              {character.mainImages && (
+                <img 
+                  src={character.mainImages} 
+                  alt={character.title} 
+                  ref={mainImageRef} 
+                  className='details-image' 
+                />
+              )}
+            </div>
+
+            {/* Additional Images */}
+            <div className='details-other-images'>
+              {character.images && character.images.length > 0 && (
+                character.images.map((image, index) => (
+                  <img 
+                    key={index} 
+                    src={image} 
+                    alt={`additional-${index}`} 
+                    ref={(el) => (otherImagesRef.current[index] = el)} 
+                    className='details-other-image' 
+                  />
+                ))
+              )}
+            </div>
+
+            {/* Videos */}
+            
+              {character.videos && character.videos.length > 0 && (
+                <div className='video-container'>
+                  {character.videos.map((video, index) => (
+                    <video key={index} controls loading="lazy" className='video-player' ref={(el) => (videoRef.current[index] = el)}>
+                      <source src={video} type='video/mp4' />
+                      Your browser does not support the video tag.
+                    </video>
+                  ))}
+                </div>
+              )}
+            
+
+            {/* Description */}
+            <p className="details-description">{character.description}</p>
+          </>
+        )}
+
+        <div className='bottom-button'>
+          <div className='go-back-container'>
+            <a className='go-back' href='/character'>
+              <span className='icon-right'><FaArrowLeft /></span>Go back
+            </a>
+          </div>
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default Details;

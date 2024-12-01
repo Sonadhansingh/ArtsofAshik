@@ -1,0 +1,40 @@
+.skills {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .skills-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .bar {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .info {
+    margin-bottom: 10px;
+  }
+  
+  .info span {
+    font-size: 18px;
+    font-weight: 600;
+  }
+  
+  .progress-line {
+    background: #ddd;
+    border-radius: 25px;
+    overflow: hidden;
+    position: relative;
+    height: 20px;
+  }
+  
+  .progress-line span.progress {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(0, 123, 255, 0.9), rgba(0, 123, 255, 0.6));
+    border-radius: 25px;
+  }
+  

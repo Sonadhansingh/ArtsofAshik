@@ -28,8 +28,12 @@
   
   /* Text displayed on the loading screen */
   #loading-text {
+    width: 100%;
     position: relative;
     z-index: 2;
+    display: flex;
+    justify-content: center ;
+    align-items: center;
     font-size: 6rem;
     color: #000000;
     overflow: hidden;
@@ -39,6 +43,9 @@
   .loading-number {
     width: 100%;
     position: relative;
+    display: flex;
+    justify-content: center ;
+    align-items: center;
     color: #000000;
     font-family: "Playwrite CU", cursive;
     font-weight: 400;

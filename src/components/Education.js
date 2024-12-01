@@ -38,7 +38,7 @@ const EducationExperience = () => {
           {educations.map((education) => (
             <div key={education._id} className="education-branch">
               <div className="education-logo">
-                <img className='education-logo' src={booklogo} alt='education image'/>
+                <img className='education-logo' src={booklogo} alt='education'/>
               </div>
               <div className="education-details">
                 <p className="education-degree-year">
@@ -60,7 +60,7 @@ const EducationExperience = () => {
           {experiences.map((experience) => (
             <div key={experience._id} className="experience-branch">
               <div className="experience-logo">
-                <img className='experience-logo' src={booklogo} alt='experience image'/>
+                <img className='experience-logo' src={booklogo} alt='experience'/>
               </div>
               <div className="experience-details">
                 <p className="experience-position-company">

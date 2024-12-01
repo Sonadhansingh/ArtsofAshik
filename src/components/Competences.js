@@ -24,15 +24,17 @@ const Competences = () => {
       {/* <div className='line-splitter'></div> */}
       <div className="public-competence-grid">
         {competences.length === 0 ? (
-          <p>No competences available</p>
+          <p></p>
         ) : (
           competences.map((item) => (
             <div key={item._id} className="public-competence-item">
-              <img
-                src={`${process.env.REACT_APP_API_URL}/${item.image}`}
+              {item.image && (
+                <img
+                src={item.image}
                 alt="Competence"
                 className="public-competence-image"
               />
+              )}
               <p className="public-competence-title">{item.title}</p>
             </div>
           ))

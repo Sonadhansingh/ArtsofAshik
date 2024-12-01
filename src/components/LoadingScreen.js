@@ -6,7 +6,6 @@ const LoadingScreen = ({ onLoaded }) => {
   const [count, setCount] = useState(0);
   const [loadingDone, setLoadingDone] = useState(false);
 
-
   useEffect(() => {
     const interval = setInterval(() => {
       setCount((prevCount) => {

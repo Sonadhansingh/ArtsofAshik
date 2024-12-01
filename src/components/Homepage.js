@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import './Homepage.css';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import axios from 'axios';
 import { FaArrowRight } from 'react-icons/fa';
-import SkillsChart from './Skills/SkillsChart';
-import StrengthChart from './Skills/StrengthChart';
-import './Homepage.css';
-import ImageRoll from './ImageRoll';
-import Competences from './Competences';
-import AOS from 'aos';
 import 'aos/dist/aos.css';
-import EducationExperience from './Education';
-// import backgroundvideo from './rr.mp4'
+// Lazy load components
+const SkillsChart = lazy(() => import('./Skills/SkillsChart'));
+const StrengthChart = lazy(() => import('./Skills/StrengthChart'));
+const ImageRoll = lazy(() => import('./ImageRoll'));
+const Competences = lazy(() => import('./Competences'));
+const EducationExperience = lazy(() => import('./Education'));
+// Import CSS
 
 const PublicAppHomePage = () => {
-  const [latestVideoUrl, setLatestVideoUrl] = useState('');
+  const [videoUrl, setVideoUrl] = useState('');
   const [bigText, setBigText] = useState('');
   const [links, setLinks] = useState({ generalTitle: '', generalUrl: '', instaTitle: '', instaUrl: '' });
   const [skills, setSkills] = useState([]);
@@ -23,17 +23,26 @@ const PublicAppHomePage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    AOS.init();
-
+  
+    // Fetch video as soon as the component mounts
     const fetchLatestVideo = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/video/latest`);
-        setLatestVideoUrl(response.data.videoUrl);
+        if (response.data.videos.length > 0) {
+          setVideoUrl(response.data.videos[0]); // Set the latest video URL
+        }
       } catch (error) {
-        console.error('Error fetching latest video:', error);
+        console.error('Error fetching the latest video:', error);
       }
     };
 
+    // Call the fetch video function immediately
+    fetchLatestVideo();
+
+  }, []);
+
+  // Fetch other data asynchronously in another effect
+  useEffect(() => {
     const fetchBigText = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/textLink/bigText`);
@@ -73,13 +82,13 @@ const PublicAppHomePage = () => {
       }
     };
 
-    fetchLatestVideo();
     fetchBigText();
     fetchLinks();
     fetchSkills();
     fetchStrength();
   }, []);
 
+  // Fetch contact details in another effect
   useEffect(() => {
     const fetchContactDetails = async () => {
       try {
@@ -96,11 +105,11 @@ const PublicAppHomePage = () => {
 
     fetchContactDetails();
   }, []);
-
   return (
     <>
+    <link rel='prefetch' href='videoUrl' as='video'></link>
       <div className="homepage-container">
-        {latestVideoUrl ? (
+        {/* {latestVideoUrl ? (
           <div className='video-wrapper'>
             <video id="bg-home-video" autoPlay loop muted>
               <source src={latestVideoUrl} type="video/mp4" />
@@ -109,7 +118,16 @@ const PublicAppHomePage = () => {
           </div>
         ) : (
           <p></p>
-        )} 
+        )}  */}
+        
+        {videoUrl && (
+           <div className='video-wrapper'>
+            <video id="bg-home-video" autoPlay loop muted preload="auto">
+              <source src={videoUrl} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        )}
       </div>
 
       <div className='wrapper'>
@@ -131,7 +149,10 @@ const PublicAppHomePage = () => {
       <div className='small-wrapper'>
         <p className='right-text'>Education & Experience</p>
         <div className='line-splitter'></div>
-      <EducationExperience />
+        <Suspense fallback={<div>Loading Education & Experience...</div>}>
+          <EducationExperience />
+        </Suspense>
+     
       </div>
       
       
@@ -141,13 +162,19 @@ const PublicAppHomePage = () => {
             <h2>Skills & Strength</h2>
           </div>
           <div className="chart-container">
+          <Suspense fallback={<div>Loading Skills...</div>}>
             <SkillsChart skills={skills} />
+          </Suspense>
+          <Suspense fallback={<div>Loading Strength...</div>}>
             <StrengthChart strength={strength} />
+          </Suspense>
           </div>
         </div>
       </div>
 
-      <Competences/>
+      <Suspense fallback={<div>Loading Competences...</div>}>
+        <Competences />
+      </Suspense>
 
       <div className='wrapper'>
         <div className='press-general'>
@@ -193,7 +220,11 @@ const PublicAppHomePage = () => {
         </div>
       </div>
 
-      <ImageRoll/>
+      {/* Lazy load ImageRoll */}
+    <Suspense fallback={<div>Loading Images...</div>}>
+      <ImageRoll />
+    </Suspense>
+
 
       <div className='line-splitter-big'></div>
 
@@ -233,7 +264,7 @@ const PublicAppHomePage = () => {
         
       <div className='reserved-text'>
         All rights reserved. <br/>
-        @2024
+        @{new Date().getFullYear()}
       </div>
       </div>
       <div className='footer-text'>

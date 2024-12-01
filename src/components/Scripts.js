@@ -18,18 +18,19 @@ const Scripts = () => {
     fetchScripts();
   }, []);
 
+
   return (
     <div className="script-container">
       <p className="title">SCRIPTS</p>
       {scripts.map((script) => (
         <div key={script._id} className="script-card fade-in">
           <div className="script-imagecontainer">
-            <img src={`${process.env.REACT_APP_API_URL}/${script.imageUrl}`} alt={script.title} className="script-image" />
+          <img src={script.imageUrl} alt={script.title} className="script-image" />
           </div>
           <div className="script-content slide-in-right">
             <h3 className="script-title">{script.title}</h3>
             <p className="script-description">{script.description}</p>
-            <a href={`${process.env.REACT_APP_API_URL}/${script.pdfUrl}`} download className="script-download">
+            <a href={script.pdfUrl} download className="script-download">
               <button className="script-button-container">
                 <span className="button-content">Download PDF</span>
               </button>

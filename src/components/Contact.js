@@ -16,8 +16,8 @@ const Contact = () => {
 
   useEffect(() => {
     fetchContacts();
-    fetchLinks()
-    fetchContactDetails()
+    fetchLinks();
+    fetchContactDetails();
   }, []);
 
   const fetchLinks = async () => {
@@ -255,7 +255,7 @@ const Contact = () => {
         </div> */}
       <div className='reserved-text'>
         All rights reserved. <br/>
-        @2024
+        @{new Date().getFullYear()}
       </div>
       </div>
       <div className='footer-text'>

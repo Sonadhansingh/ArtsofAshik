@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './ImageRoll.css'; // Import the CSS file for styling
 
+const API_URL = `${process.env.REACT_APP_API_URL}/api/images`;
+
 const ImageRoll = () => {
   const [images, setImages] = useState([]);
 
@@ -11,8 +13,8 @@ const ImageRoll = () => {
 
   const fetchImages = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/images`);
-      setImages(data);
+      const response = await axios.get(API_URL); // Fetches image data (S3 URLs) from MongoDB
+      setImages(response.data); // Assuming the response is an array of image objects
     } catch (error) {
       console.error('Error fetching images:', error);
     }
@@ -22,9 +24,9 @@ const ImageRoll = () => {
     <div className="carousel-wrapper">
       <div className="carousel">
         {images.map((image, index) => (
-          <div key={index} className="carousel-image-wrapper">
-            <img
-              src={`${process.env.REACT_APP_API_URL}/${image.path}`}
+          <div key={image._id} className="carousel-image-wrapper">
+             <img
+              src={image.url} 
               alt={image.filename}
               className="carousel-image"
             />
@@ -33,7 +35,7 @@ const ImageRoll = () => {
         {images.map((image, index) => (
           <div key={index + images.length} className="carousel-image-wrapper">
             <img
-              src={`${process.env.REACT_APP_API_URL}/${image.path}`}
+              src={image.url} 
               alt={image.filename}
               className="carousel-image"
             />
