@@ -225,14 +225,21 @@ const Contact = () => {
           <p>{error}</p>
         ) : (
           <>
+          <div className='designer'>
+          <p className='contact-title'>Design & Dev by</p>
+            <div className="contact-details">
+            <em><a href="mailto:sona24347@gmail.com">Sona Dhansingh</a></em>
+            </div>
+          </div>
+          <div className='contact-main'>
             <div className="contact-links">
               <p className='contact-title'>Social media</p>
-              {contacts.map(contact => (
-                <div key={contact._id} className="contact-details">
-                <a href={contact.contactUrl} target="_blank" rel="noopener noreferrer">
-                  {contact.heading}
-                </a>
-              </div>
+                {contacts.map(contact => (
+                <div className="contact-details" key={contact._id}>
+                  <a href={contact.contactUrl} target="_blank" rel="noopener noreferrer">
+                    {contact.heading}
+                  </a>
+                </div>
               ))}
             </div>
 
@@ -244,6 +251,7 @@ const Contact = () => {
                 <p>{contactDetails.mainId}</p>
               </div>
             )}
+            </div>
             </div>
           </>
         )}

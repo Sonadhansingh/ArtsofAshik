@@ -238,7 +238,7 @@ const PublicAppHomePage = () => {
         ) : (
           <>
           <div className='designer'>
-          <p className='contact-title'>Designed & Developed by</p>
+          <p className='contact-title'>Design & Dev by</p>
             <div className="contact-details">
             <em><a href="mailto:sona24347@gmail.com">Sona Dhansingh</a></em>
             </div>
